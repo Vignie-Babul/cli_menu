@@ -1,4 +1,4 @@
-from cli_menu import cli_menu
+import cli_menu
 
 
 if __name__ == '__main__':
