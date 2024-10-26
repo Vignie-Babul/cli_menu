@@ -16,12 +16,14 @@ class CLIMenu:
 		self,
 		options: list,
 		highlight_length: int = 12,
+		last_option_exit: bool = True,
 		fg: hex = '#ffffff',
 		bg: hex = '#3d7efc',
 	) -> None:
 
 		self._options = options
 		self._highlight_length = highlight_length
+		self._last_option_exit = last_option_exit
 		self._fg = fg
 		self._bg = bg
 
@@ -68,6 +70,15 @@ class CLIMenu:
 		if self._current_option_index < self._options_length:
 			self._current_option_index += 1
 
+	def _exit(self):
+		if not self._last_option_exit:
+			return self._options[self._current_option_index]
+
+		if self._current_option_index == self._options_length:
+			return None
+		else:
+			return self._options[self._current_option_index]
+
 	def wait_response(self):
 		while True:
 			os.system('cls')
@@ -83,9 +94,6 @@ class CLIMenu:
 				case win_key.SpecialFunctionKeys.DOWN:
 					self._lower_current_option()
 				case win_key.SpecialFunctionKeys.ENTER:
-					if self._current_option_index == self._options_length:
-						return None
-					else:
-						return self._options[self._current_option_index]
+					return self._exit()
 				case _:
 					pass
